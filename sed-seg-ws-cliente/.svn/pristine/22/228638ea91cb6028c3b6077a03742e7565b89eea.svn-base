@@ -1,0 +1,2 @@
+#URL DEL SERVICIO WEB DE SEGURIDAD DE SEDAPAL
+urlws=http://192.168.110.27:8084/webserviceserguridad_ACT/seguridadws?wsdl

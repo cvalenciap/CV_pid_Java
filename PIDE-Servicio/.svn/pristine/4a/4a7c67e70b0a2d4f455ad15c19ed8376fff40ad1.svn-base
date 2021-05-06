@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.sedapal.pide.dao.AuditoriaDao">
+	
+	<resultMap id="AuditoriaResultMap" type="Auditoria">
+        <result property="idConsulta"			column="N_ID_CAB_CONSULTA"/>
+		<result property="idServicio"			column="N_ID_SERVICIO"/>
+		<result property="desServicio"			column="V_DES_SERVICIO"/>
+		<result property="apPaterno"			column="V_APE_PATERNO"/>
+		<result property="apMaterno"			column="V_APE_MATERNO"/>
+		<result property="nombres"				column="V_NOMBRES"/>
+		<result property="nroFicha"				column="V_NRO_FICHA"/>
+		<result property="datosConsulta"		column="V_DATOS_CONSULTA"/>
+		<result property="fecHorConsulta"		column="D_FE_HOR_CONSULTA"/>
+		<result property="hostConsulta"			column="V_DES_HOST"/>
+		<result property="stRegi"				column="V_ST_REGI"/>
+    </resultMap>
+    
+    <insert id="insertar" statementType="CALLABLE" parameterType="Auditoria">
+	   {call AGLC.PCK_PIDE_CAB_CONSULTA.PRC_REGISTRAR_CAB(	   	      
+			 #{idServicio}
+		 	,#{desServicio} 
+	 		,#{apPaterno} 
+	 		,#{apMaterno} 
+			,#{nombres}                
+			,#{nroFicha}                
+			,#{datosConsulta}    
+  		    ,#{fecHorConsulta}
+  		    ,#{hostConsulta}
+  		    ,#{stRegi}
+  		    ,#{idUsuaCrea}
+  		    ,#{deTermCrea}
+  		    ,#{idConsulta , javaType=java.lang.Integer, jdbcType=NUMERIC, mode=OUT}                    
+	   )}
+    </insert>
+    
+	<update id="actualizar" statementType="CALLABLE" parameterType="Auditoria">
+		{ CALL AGLC.PCK_PIDE_CAB_CONSULTA.PRC_ACTUALIZAR_CAB(
+		     #{idConsulta}
+		    ,#{idServicio}
+		    ,#{desServicio}
+		    ,#{apPaterno} 
+	 		,#{apMaterno} 
+	 		,#{nombres} 
+			,#{nroFicha}                
+			,#{datosConsulta}
+			,#{fecHorConsulta}
+			,#{hostConsulta}
+  		    ,#{stRegi}
+  		    ,#{idUsuaModi}
+  		    ,#{deTermModi}   
+		) }
+	</update>
+	
+	<delete id="eliminar" statementType="CALLABLE" parameterType="Auditoria" >
+		{call AGLC.PCK_PIDE_CAB_CONSULTA.PRC_ELIMINAR_CAB(
+			#{idConsulta}
+			,#{idUsuaModi}
+			,#{deTermModi}
+		)}
+	</delete>
+	    
+	<parameterMap id="auditoriaBusqueda" type="java.util.Map">
+    	<parameter property="PAR_N_ID_CAB_CONSULTA"  jdbcType="NUMERIC" javaType="java.lang.Integer"	mode="IN"/>
+    	<parameter property="PAR_N_ID_SERVICIO" 	 jdbcType="VARCHAR" javaType="java.lang.Integer"	mode="IN"/>
+    	<parameter property="PAR_OUT_CURSOR"		 jdbcType="CURSOR"  javaType="java.sql.ResultSet" 	mode="OUT"	resultMap="AuditoriaResultMap"/>
+    </parameterMap>
+    
+	<select id="buscarAuditoria" statementType="CALLABLE" parameterMap="auditoriaBusqueda">
+		{ CALL AGLC.PCK_PIDE_CAB_CONSULTA.PRC_LISTA_CAB(?,?,?) }
+	</select>
+	
+</mapper>

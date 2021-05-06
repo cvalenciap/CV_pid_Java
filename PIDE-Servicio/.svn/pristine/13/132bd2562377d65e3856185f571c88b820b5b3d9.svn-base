@@ -1,0 +1,17 @@
+#Configuration of deploy
+server.port=8082
+#Configuration Base de Datos
+spring.datasource.username=AGC_CONEX
+spring.datasource.password=desarrollo
+spring.datasource.url=jdbc:oracle:thin:@192.168.110.24:1521/DBCON
+spring.datasource.driver-class-name=oracle.jdbc.driver.OracleDriver
+#Codigo de Sistema PIDE
+soap.code.system=66
+#Tiempo de Session
+server.session.timeout= 60
+#Paths
+url.validate.seguridad=/api/credenciales/
+
+#token parameter
+parametro.token.jwtSecret = P@ssw0rd
+parametro.token.jwtExpiration = 1800

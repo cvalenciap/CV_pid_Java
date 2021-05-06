@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.sedapal.pide.dao.MantenimientoDao">
+
+	<resultMap id="MantienimientoResultMap" type="Mantenimiento">
+        <result property="idServicio"			column="N_ID_SERVICIO"/>
+        <result property="desServicio"			column="V_DES_SERVICIO"/>
+		<result property="urlServicio"			column="V_URL_SERV"/>
+		<result property="funcServicio"			column="V_FUNC_SERV"/>
+		<result property="restriLun"			column="V_RESTRI_LUN"/>
+		<result property="restriMar"			column="V_RESTRI_MAR"/>
+		<result property="restriMie"				column="V_RESTRI_MIE"/>
+		<result property="restriJue"				column="V_RESTRI_JUE"/>
+		<result property="restriVie"		column="V_RESTRI_VIE"/>
+		<result property="restriSab"		column="V_RESTRI_SAB"/>
+		<result property="restriDom"			column="V_RESTRI_DOM"/>
+		<result property="horInicio"			column="V_HOR_INICIO"/>
+		<result property="horFin"			column="V_HOR_FIN"/>
+		<result property="stRegi"				column="V_ST_REGI"/>
+		<result property="nomPgr"			column="A_V_NOMPRG"/>
+    </resultMap>
+    
+    <select id="buscarMantenimiento" statementType="CALLABLE" parameterMap="mantenimientoBusqueda">
+		{ CALL AGLC.PCK_PIDE_MANT_SERVICIOS.PRC_LISTA_CAB(?,?,?) }
+	</select>
+	
+	<parameterMap id="mantenimientoBusqueda" type="java.util.Map">
+    	<parameter property="PAR_N_ID_SERVICIO" 	 jdbcType="VARCHAR" javaType="java.lang.Integer"	mode="IN"/>
+    	<parameter property="PAR_OUT_CURSOR"		 jdbcType="CURSOR"  javaType="java.sql.ResultSet" 	mode="OUT"	resultMap="AuditoriaResultMap"/>
+    </parameterMap>
+    
+    <insert id="insertar" statementType="CALLABLE" parameterType="Mantenimiento">
+	   {call AGLC.PCK_PIDE_MANT_SERVICIOS.PRC_REGISTRAR_CAB(	   	      
+			 #{desServicio}
+		 	,#{urlServicio} 
+	 		,#{funcServicio} 
+	 		,#{restriLun} 
+			,#{restriMar}                
+			,#{restriMie}                
+			,#{restriJue}    
+  		    ,#{restriVie}
+  		    ,#{restriSab}
+  		    ,#{restriDom}
+  		    ,#{horInicio}
+  		    ,#{horFin}
+  		    ,#{stRegi}
+  		    ,#{idUsuaCrea}
+  		    ,#{deTermCrea}
+  		    ,#{idServicio , javaType=java.lang.Integer, jdbcType=NUMERIC, mode=OUT}                    
+	   )}
+    </insert>
+    
+    <update id="actualizar" statementType="CALLABLE" parameterType="Mantenimiento">
+	   {call AGLC.PCK_PIDE_MANT_SERVICIOS.PRC_ACTUALIZAR_SERV(	   	      
+			 #{idServicio}   	      
+			,#{desServicio}
+		 	,#{urlServicio} 
+	 		,#{funcServicio} 
+	 		,#{restriLun} 
+			,#{restriMar}                
+			,#{restriMie}                
+			,#{restriJue}    
+  		    ,#{restriVie}
+  		    ,#{restriSab}
+  		    ,#{restriDom}
+  		    ,#{horInicio}
+  		    ,#{horFin}
+  		    ,#{stRegi}
+  		    ,#{idUsuaModi}
+  		    ,#{deTermModi}                  
+	   )}
+    </update>
+    
+    <delete id="eliminar" statementType="CALLABLE" parameterType="Mantenimiento" >
+		{call AGLC.PCK_PIDE_MANT_SERVICIOS.PRC_ELIMINAR_SERV(
+			#{idServicio}
+			,#{idUsuaModi}
+			,#{deTermModi}
+		)}
+	</delete>
+
+</mapper>

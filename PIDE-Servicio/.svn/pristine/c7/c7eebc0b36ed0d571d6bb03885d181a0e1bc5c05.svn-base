@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pe.com.sedapal.pide.dao.PideDetalleGeneralDao">
+
+	<resultMap id="PideDetalleGeneralResultMap" type="PideDetalleGeneral">
+        <result property="idDetGeneral"			column="N_ID_DET_GENERAL"/>
+        <result property="idGeneral"			column="N_ID_GENERAL"/>
+        <result property="desDetGeneral"			column="V_DES_DET_GENERAL"/>
+		<result property="desDetCorta"			column="V_DES_DET_CORTA"/>
+		<result property="valor1"			column="V_VALOR_1"/>
+		<result property="valor2"			column="V_VALOR_2"/>
+		<result property="valor3"			column="V_VALOR_3"/>
+		<result property="valor4"			column="V_VALOR_4"/>
+		<result property="valor5"			column="V_VALOR_5"/>
+		<result property="valor6"			column="V_VALOR_6"/>
+		<result property="stRegi"				column="V_ST_REGI"/>
+		<result property="nomPgr"			column="A_V_NOMPRG"/>
+    </resultMap>
+    
+    <parameterMap id="pideDetalleGeneralBusqueda" type="java.util.Map">
+    	<parameter property="PAR_N_ID_DET_GENERAL" 	 jdbcType="VARCHAR" javaType="java.lang.Integer"	mode="IN"/>
+    	<parameter property="PAR_V_ST_REGI" 	 jdbcType="VARCHAR" javaType="java.lang.Integer"	mode="IN"/>
+    	<parameter property="PAR_OUT_CURSOR"		 jdbcType="CURSOR"  javaType="java.sql.ResultSet" 
+   			mode="OUT"	resultMap="PideGeneralResultMap"/>
+    </parameterMap>
+	
+	<select id="buscarPideDetalleGeneral1" statementType="CALLABLE" parameterMap="pideDetalleGeneralBusqueda">
+		{ CALL AGLC.PCK_PIDE_GENERALES.PRC_BUSCAR_DET_GENERALES(?,?,?) }
+	</select>
+	
+	<select id="buscarPideDetalleGeneral2" statementType="CALLABLE" parameterMap="pideDetalleGeneralBusqueda">
+		{ CALL AGLC.PCK_PIDE_GENERALES.PRC_BUSCAR_DET_GENERALES2(?,?,?) }
+	</select>
+    
+    <insert id="insertar" statementType="CALLABLE" parameterType="PideDetalleGeneral">
+	   {call AGLC.PCK_PIDE_GENERALES.PRC_REGIST_DET_GENERALES(	   	      
+			 #{desDetGeneral}
+		 	,#{desDetCorta}
+	 		,#{valor1}
+	 		,#{valor2}
+	 		,#{valor3}
+	 		,#{valor4}
+	 		,#{valor5}
+	 		,#{valor6}
+  		    ,#{stRegi}
+  		    ,#{idUsuaCrea}
+  		    ,#{deTermCrea}
+  		    ,#{idDetGeneral , javaType=java.lang.Integer, jdbcType=NUMERIC, mode=OUT}                    
+	   )}
+    </insert>
+    
+    <update id="actualizar" statementType="CALLABLE" parameterType="PideGeneral">
+	   {call AGLC.PCK_PIDE_GENERALES.PRC_ACTUALI_DET_GENERALES(	   	      
+			 #{desDetGeneral}
+		 	,#{desDetCorta}
+	 		,#{valor1}
+	 		,#{valor2}
+	 		,#{valor3}
+	 		,#{valor4}
+	 		,#{valor5}
+	 		,#{valor6}
+  		    ,#{stRegi}
+  		    ,#{idUsuaModi}
+  		    ,#{deTermModi}                  
+	   )}
+    </update>
+    
+    <delete id="eliminar" statementType="CALLABLE" parameterType="PideGeneral" >
+		{call AGLC.PCK_PIDE_GENERALES.PRC_ELIMINAR_DET_GENERALES(
+			#{idDetGeneral}
+			,#{idUsuaModi}
+			,#{deTermModi}
+		)}
+	</delete>
+	
+	
+	<select id="listDetallesGenerales" statementType="CALLABLE" parameterMap="pideDetalleGeneralBusqueda">
+		{ CALL AGLC.PCK_PIDE_GENERALES.PRC_LIST_DET_GENERALES(?,?) }
+	</select>
+	
+	<select id="listDetallesGenerales_i" statementType="CALLABLE" parameterMap="pideDetalleGeneralBusqueda">
+		{ CALL AGLC.PCK_PIDE_GENERALES.PRC_LIST_DET_GENERALES_I(?,?) }
+	</select>
+	
+	<select id="listDetallesGenerales_m" statementType="CALLABLE" parameterMap="pideDetalleGeneralBusqueda">
+		{ CALL AGLC.PCK_PIDE_GENERALES.PRC_LIST_DET_GENERALES_M(?,?) }
+	</select>
+    
+    <parameterMap id="pideDetalleGeneralPara" type="java.util.Map">
+    	<parameter property="PAR_N_ID_DET_GENERAL" 	 jdbcType="VARCHAR" javaType="java.lang.Integer"	mode="IN"/>
+    	<parameter property="PAR_V_VALOR_1" 	 jdbcType="VARCHAR" javaType="java.lang.String"	mode="IN"/>
+    	<parameter property="PAR_OUT_CURSOR"		 jdbcType="CURSOR"  javaType="java.sql.ResultSet" 
+   			mode="OUT"	resultMap="PideGeneralResultMap"/>
+    </parameterMap>
+    
+	<select id="listDetallesGeneralesPara" statementType="CALLABLE" parameterMap="pideDetalleGeneralPara">
+		{ CALL AGLC.PCK_PIDE_GENERALES.PRC_LIST_DET_GEN_PARA(?,?,?) }
+	</select>
+    
+</mapper>
